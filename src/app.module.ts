@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { TaskModule } from './task/task.module';
 import { MovieModule } from './movie/movie.module';
 import { MovieTestModule } from './movie-test/movie-test.module';
+import { MovieDecoratorsControllersModule } from './movie-decorators-controllers/movie-decorators-controllers.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -18,8 +19,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: process.env.OBSERVE_APP_SECRET ?? 'YOUR_APP_SECRET',
       serviceId: 'nestjs',
     }),
-    MovieModule,
-    MovieTestModule,
+    MovieDecoratorsControllersModule,
+    // MovieModule,
+    // MovieTestModule,
     // TaskModule,
   ],
   controllers: [AppController],
