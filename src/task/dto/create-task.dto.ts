@@ -10,6 +10,9 @@ import {
   IsInt,
   IsArray,
   IsEnum,
+  Matches,
+  IsUrl,
+  IsUUID,
 } from 'class-validator';
 
 export enum TaskTag {
@@ -41,4 +44,19 @@ export class CreateTaskDto {
   @IsEnum(TaskTag, { each: true, message: 'Tags must be indentichnuy' })
   @IsOptional()
   tags: TaskTag[];
+
+  @IsString({ message: 'Password must be string' })
+  @MinLength(6, { message: 'must be 6 symbols' })
+  @Matches(/^(?=.*[A-Z])(?=.*[0-9]).+$/, {
+    message: 'must be 1 big Letter, must be 6 min symbols',
+  })
+  password: string;
+
+  // protocols ['https,http']; require_protocol: false, require_port: true, require_valid_protocol: false
+  //hosst_whitelist ['google.com', 'ua-football.com'] host_blacklist
+  @IsUrl({ protocols: ['http'] }, { message: 'Error format url' })
+  url: string;
+
+  @IsUUID('4', { message: 'Validation is error' })
+  userId: string;
 }
