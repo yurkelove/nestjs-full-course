@@ -8,7 +8,15 @@ import {
   IsNumber,
   IsPositive,
   IsInt,
+  IsArray,
+  IsEnum,
 } from 'class-validator';
+
+export enum TaskTag {
+  WORK = 'work',
+  STUDY = 'study',
+  HOME = 'home',
+}
 
 export class CreateTaskDto {
   @IsString()
@@ -27,4 +35,10 @@ export class CreateTaskDto {
   @IsPositive({ message: 'Must be positive' })
   @IsOptional()
   priority: number;
+
+  @IsArray({ message: 'Tags must be array' })
+  // @IsString({ message: 'Tags must be string', each: true })
+  @IsEnum(TaskTag, { each: true, message: 'Tags must be indentichnuy' })
+  @IsOptional()
+  tags: TaskTag[];
 }
