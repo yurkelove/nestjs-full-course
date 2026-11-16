@@ -14,6 +14,7 @@ import {
   IsUrl,
   IsUUID,
 } from 'class-validator';
+import { StartsWith } from '../decorators/starts-with.decorator';
 
 export enum TaskTag {
   WORK = 'work',
@@ -26,6 +27,8 @@ export class CreateTaskDto {
   @IsNotEmpty()
   // @MinLength(2)
   // @MaxLength(10)
+  //Custom decorator
+  @StartsWith('Task:')
   @Length(2, 40)
   title: string;
 
