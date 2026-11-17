@@ -7,28 +7,25 @@ import { MovieModule } from './movie/movie.module';
 import { MovieTestModule } from './movie-test/movie-test.module';
 import { MovieDecoratorsControllersModule } from './movie-decorators-controllers/movie-decorators-controllers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { getTypeOrmCOnfig } from './config/typeorm.config';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
-    // Distributed tracing, auto-correlated logs, request/job metrics, error
-    // telemetry, alarms, and more — out of the box. Sign up at https://observe.nestjs.com,
-    // then run `npx @nestjs/observe link` to write your key pair into .env.
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ObserveModule.forRoot({
       appKey: process.env.OBSERVE_APP_KEY ?? 'YOUR_APP_KEY',
       appSecret: process.env.OBSERVE_APP_SECRET ?? 'YOUR_APP_SECRET',
       serviceId: 'nestjs',
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5433,
-      username: 'root',
-      password: '123456',
-      database: 'nestjs-full-course',
-      autoLoadEntities: true,
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule], // ready to use
+      useFactory: getTypeOrmCOnfig,
+      inject: [ConfigService], // add configservice inside useFactory
     }),
     MovieDecoratorsControllersModule,
     // MovieModule,
