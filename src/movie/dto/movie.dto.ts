@@ -8,6 +8,8 @@ import {
   Max,
   IsOptional,
   IsBoolean,
+  IsUUID,
+  IsArray,
 } from 'class-validator';
 
 //  Обычно это тело (body) POST- или PUT-запроса.
@@ -23,4 +25,8 @@ export class MovieDto {
   @IsOptional()
   @IsBoolean()
   isPublic?: boolean;
+
+  @IsArray()
+  @IsUUID('4', { each: true })
+  actorsIds: string[];
 }

@@ -3,12 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   Generated,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ReviewEntity } from '../../review/entity/review.entity';
+import { ActorEntity } from '../../actor/entities/actor.entity';
 
 export enum Genre {
   ACTION = 'action',
@@ -31,6 +34,14 @@ export class MovieEntity {
 
   @OneToMany(() => ReviewEntity, (review) => review.movie)
   reviews: ReviewEntity[];
+
+  @ManyToMany(() => ActorEntity, (actor) => actor.movies)
+  @JoinTable({
+    name: 'movie_actors',
+    joinColumn: { name: 'movie_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'actor_id', referencedColumnName: 'id' },
+  })
+  actors: ActorEntity[];
 
   //Date decorators
   @CreateDateColumn()

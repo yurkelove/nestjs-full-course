@@ -2,8 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { MovieTestService } from '../movie-test/movie-test.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MovieEntity } from './entities/movie.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { MovieDto } from './dto/movie.dto';
+import { ActorEntity } from '../actor/entities/actor.entity';
 
 @Injectable()
 export class MovieService {
@@ -11,6 +12,8 @@ export class MovieService {
   constructor(
     @InjectRepository(MovieEntity)
     private readonly movieRepository: Repository<MovieEntity>,
+    @InjectRepository(ActorEntity)
+    private readonly actorRepository: Repository<ActorEntity>,
   ) {}
 
   //get data
@@ -37,6 +40,9 @@ export class MovieService {
       where: {
         id,
       },
+      relations: {
+        actors: true,
+      },
     });
 
     if (!movie) throw new NotFoundException('Not found movie');
@@ -46,7 +52,22 @@ export class MovieService {
 
   //created
   async create(dto: MovieDto): Promise<MovieEntity> {
-    const movie = this.movieRepository.create(dto);
+    const { title, releaseYear, actorsIds } = dto;
+
+    const actors = await this.actorRepository.find({
+      where: {
+        id: In(actorsIds),
+      },
+    });
+
+    if (!actors || !actors.length)
+      throw new NotFoundException('Not found one by one');
+
+    const movie = this.movieRepository.create({
+      title,
+      releaseYear,
+      actors,
+    });
 
     return await this.movieRepository.save(movie);
   }
