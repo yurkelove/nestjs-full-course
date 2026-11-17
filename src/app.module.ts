@@ -27,8 +27,8 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       useFactory: getTypeOrmCOnfig,
       inject: [ConfigService], // add configservice inside useFactory
     }),
-    MovieDecoratorsControllersModule,
-    // MovieModule,
+    // MovieDecoratorsControllersModule,
+    MovieModule,
     // MovieTestModule,
     // TaskModule,
   ],
