@@ -9,7 +9,7 @@ import { MovieEntity } from './entities/movie.entity';
   imports: [TypeOrmModule.forFeature([MovieEntity]), MovieTestModule],
   controllers: [MovieController],
   providers: [MovieService],
-  // exports: [MovieService], // For all module  re-use analog angular
+  exports: [MovieService], // For all module  re-use analog angular
   // imports: [MovieTestModule], // Import module - analog @Global
 })
 export class MovieModule {}

@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   Generated,
+  OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ReviewEntity } from '../../review/entity/review.entity';
 
 export enum Genre {
   ACTION = 'action',
@@ -16,8 +18,8 @@ export enum Genre {
 @Entity('movies')
 export class MovieEntity {
   //id created updated
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   title: string;
@@ -26,6 +28,9 @@ export class MovieEntity {
     name: 'is_available',
   })
   releaseYear: number;
+
+  @OneToMany(() => ReviewEntity, (review) => review.movie)
+  reviews: ReviewEntity[];
 
   //Date decorators
   @CreateDateColumn()
@@ -37,16 +42,17 @@ export class MovieEntity {
   @Column({ default: false })
   isPublic: boolean;
 
-  // UUID
-  @PrimaryColumn()
-  @Generated('uuid')
-  idUUid: string;
+  // UUID — альтернативный способ (уже не нужен: id выше и так uuid).
+  // Второй @PrimaryColumn делал ключ составным (id + idUUid), и связь с reviews.movie_id ломалась.
+  // @PrimaryColumn()
+  // @Generated('uuid')
+  // idUUid: string;
 
   //Column options, unsigned - true - только положительные числа
   @Column({
     type: 'varchar',
     length: 128,
-    // nullable - null or no
+    nullable: true, // nullable - null or no
   })
   descriptionColumn: string;
 

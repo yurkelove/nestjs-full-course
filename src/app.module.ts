@@ -9,6 +9,7 @@ import { MovieDecoratorsControllersModule } from './movie-decorators-controllers
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getTypeOrmCOnfig } from './config/typeorm.config';
+import { ReviewModule } from './review/review.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -29,6 +30,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     }),
     // MovieDecoratorsControllersModule,
     MovieModule,
+    ReviewModule,
     // MovieTestModule,
     // TaskModule,
   ],
