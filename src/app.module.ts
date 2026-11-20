@@ -6,6 +6,7 @@ import { MovieModule } from './movie/movie.module';
 import { ConfigModule } from '@nestjs/config';
 import { ReviewModule } from './review/review.module';
 import { ActorModule } from './actor/actor.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -19,6 +20,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       appSecret: process.env.OBSERVE_APP_SECRET ?? 'YOUR_APP_SECRET',
       serviceId: 'nestjs',
     }),
+    PrismaModule,
     MovieModule,
     ReviewModule,
     ActorModule,
