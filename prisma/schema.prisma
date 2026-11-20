@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -23,8 +23,8 @@ model Movie {
   // Связь
 
   //One to one
-  poster   Poster @relation(fields: [posterId], references: [id])
-  posterId String @unique @map("poster_id")
+  poster   Poster? @relation(fields: [posterId], references: [id])
+  posterId String? @unique @map("poster_id")
 
   //One to many
   reviews Review[] @relation("movie_reviews")
