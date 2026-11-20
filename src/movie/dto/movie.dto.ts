@@ -26,6 +26,9 @@ export class MovieDto {
   @IsBoolean()
   isPublic?: boolean;
 
+  @IsString()
+  imageUrl: string;
+
   @IsArray()
   @IsUUID('4', { each: true })
   actorsIds: string[];

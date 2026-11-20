@@ -7,10 +7,16 @@ import { MovieModule } from '../movie/movie.module';
 import { MovieService } from '../movie/movie.service';
 import { MovieEntity } from '../movie/entities/movie.entity';
 import { ActorEntity } from '../actor/entities/actor.entity';
+import { PosterEntity } from '../movie/entities/poster.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ReviewEntity, MovieEntity, ActorEntity]),
+    TypeOrmModule.forFeature([
+      ReviewEntity,
+      MovieEntity,
+      ActorEntity,
+      PosterEntity,
+    ]),
     MovieModule,
   ],
   controllers: [ReviewController],
