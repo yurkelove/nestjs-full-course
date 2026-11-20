@@ -12,6 +12,7 @@ import { ReviewModule } from './review/review.module';
 import { ActorModule } from './actor/actor.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { LoggingMiddleware } from './common/middlewares/logger.middleware';
+import { MovieSwaggerModule } from './movie-swagger/movie-swagger.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -30,6 +31,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     MovieModule,
     ReviewModule,
     ActorModule,
+    MovieSwaggerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
