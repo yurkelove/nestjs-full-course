@@ -1,12 +1,41 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  UseInterceptors,
+  UsePipes,
+} from '@nestjs/common';
 import { AppService } from './app.service';
+import { StringToLowerCasePipe } from './common/pipes/string-to-lowercase.pipe';
+import { AuthGuard } from './common/guards/auth.guard';
+import { UserAgent } from './common/decorators/user-agent.decorator';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
+  getHello() {
     return this.appService.getHello();
+  }
+
+  @UsePipes(StringToLowerCasePipe)
+  @Post()
+  create(@Body('title') title: string) {
+    return `Movie: ${title}`;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('@me')
+  getProfile(@UserAgent() userAgent: string) {
+    return {
+      id: 1,
+      username: 'yurkelove',
+      email: 'yurkelove28@gmail.com',
+      userAgent: userAgent,
+    };
   }
 }

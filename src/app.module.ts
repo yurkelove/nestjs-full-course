@@ -1,4 +1,8 @@
-import { Module } from '@nestjs/common';
+import {
+  type MiddlewareConsumer,
+  Module,
+  type NestModule,
+} from '@nestjs/common';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,6 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ReviewModule } from './review/review.module';
 import { ActorModule } from './actor/actor.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { LoggingMiddleware } from './common/middlewares/logger.middleware';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -29,4 +34,10 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // forRoutes для каких путей что б работал
+    // exclude для каких путей что б не работал
+    consumer.apply(LoggingMiddleware).forRoutes('*');
+  }
+}
