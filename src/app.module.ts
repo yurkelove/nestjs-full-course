@@ -1,18 +1,10 @@
-import {
-  type MiddlewareConsumer,
-  Module,
-  type NestModule,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MovieModule } from './movie/movie.module';
-import { ConfigModule } from '@nestjs/config';
-import { ReviewModule } from './review/review.module';
-import { ActorModule } from './actor/actor.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { LoggingMiddleware } from './common/middlewares/logger.middleware';
-import { MovieSwaggerModule } from './movie-swagger/movie-swagger.module';
+import { AuthModule } from './auth/auth.module';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -28,18 +20,9 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
       serviceId: 'nestjs',
     }),
     PrismaModule,
-    MovieModule,
-    ReviewModule,
-    ActorModule,
-    MovieSwaggerModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    // forRoutes для каких путей что б работал
-    // exclude для каких путей что б не работал
-    consumer.apply(LoggingMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
