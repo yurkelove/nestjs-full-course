@@ -10,8 +10,9 @@ export async function getJwtConfig(
       algorithm: 'HS256',
       //   expiresIn: configService.getOrThrow<StringValue>('JWT_ACCESS_TOKEN_TTL'),
     },
-    // verifyOptions: {
-    //   algorithms: ['HS256'],
-    // },
+    verifyOptions: {
+      algorithms: ['HS256'],
+      ignoreExpiration: false,
+    },
   };
 }
