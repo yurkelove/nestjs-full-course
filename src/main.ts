@@ -1,19 +1,20 @@
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule, ObserveInstrument } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import cookieParser from 'cookie-parser';
-import { setupSwagger } from './utils/swagger.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
   });
 
-  app.use(cookieParser());
+  const config = new DocumentBuilder()
+    .setTitle('Nest Js Course Api')
+    .setDescription('Api documentation')
+    .build();
 
-  app.useGlobalPipes(new ValidationPipe());
+  const document = SwaggerModule.createDocument(app, config);
 
-  setupSwagger(app);
+  SwaggerModule.setup('/docs', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
 }
