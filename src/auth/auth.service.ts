@@ -15,7 +15,6 @@ import { ConfigService } from '@nestjs/config';
 import type { JwtPayload } from './interfaces/jwt.interface';
 import { LoginRequest } from './dto/login.dto';
 import { isDev } from '../utils/is-dev.util';
-import { Not } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -122,6 +121,20 @@ export class AuthService {
     this.setCookie(res, 'refreshToken', new Date(0));
 
     return true;
+  }
+
+  async validate(id: string) {
+    const user = await this.PrismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
   }
 
   private auth(res: Response, id: string) {
